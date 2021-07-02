@@ -1,0 +1,6 @@
+[user]
+    name = Nathan Fox
+    email = nchristopherfox@gmail.com
+    username = nathancfox
+[core]
+    editor = vim

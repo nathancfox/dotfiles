@@ -1,0 +1,38 @@
+- defaults:
+    link:
+      relink: true
+    create:
+      mode: 0755
+
+- clean: ['~']
+
+- create:
+    - ~/software
+    - ~/sandbox
+    - ~/landingpad
+
+- link:
+    ~/.bashrc: bashrc
+    ~/.vimrc: vimrc
+    ~/.gitconfig: gitconfig
+
+- shell:
+  - [git submodule update --init --recursive, Installing submodules]
+  - 
+    command: scripts/install_git.sh
+    description: Installs git from source, locally for this account in ~/software. Version is hardcoded.
+  - 
+    command: scripts/install_miniconda.sh
+    description: Installs Miniconda3 locally for this account in ~/software. Also installs these packages: numpy, pandas, ipython, seaborn, matplotlib, pyyaml
+  - 
+    command: scripts/add_new_public_key.sh
+    description: Generates a new SSH key pair for this machine (if necessary) and copies the public key to this repo's public key folder.
+  - 
+    command: scripts/add_ssh_public_keys.sh
+    description: Adds all the public keys in this repo to this machine's ~/.ssh/authorized_keys file.
+  - 
+    command: scripts/backup_existing_dotfiles.py
+    description: Saves the existing dotfiles before initializing new ones to avoid overwriting.
+  - 
+    command: scripts/install_vim.sh
+    description: Installs vim from source, locally for this account in ~/software.
