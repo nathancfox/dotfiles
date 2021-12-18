@@ -1,10 +1,15 @@
+[hub]
+    protocol = https
 [user]
     name = Nathan Fox
     email = nchristopherfox@gmail.com
     username = nathancfox
-
 [core]
     editor = vim
-
+    whitespace = -trailing-space
 [pull]
     rebase = false
+[diff]
+    renames = true
+[color]
+    ui = auto

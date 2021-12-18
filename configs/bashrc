@@ -46,8 +46,6 @@ install_bashrc_support() {
 
 # Environment
 export PATH="$HOME/software/bin:$PATH"
-export PATH="/home/nfox/software/python396/bin:$PATH"
-export PYTHONPATH="/home/nathan/software/tools/python:$PYTHONPATH"
 export VISUAL=vim
 export EDITOR=vim
 export HISTFILESIZE=10000
@@ -121,6 +119,7 @@ alias shist="history | grep "
 alias hist="history | less"
 alias sps="ps aux | grep "
 alias search="find . | grep "
+alias hub="git"
 
 
 # Nathan's Methods
