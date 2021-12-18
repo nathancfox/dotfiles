@@ -13,3 +13,5 @@
     renames = true
 [color]
     ui = auto
+[credential]
+	helper = store
