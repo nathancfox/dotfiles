@@ -121,7 +121,7 @@ alias shist="history | grep "
 alias hist="history | less"
 alias sps="ps aux | grep "
 alias search="find . | grep "
-alias hub="git"
+alias git="hub"
 
 
 # Nathan's Methods
