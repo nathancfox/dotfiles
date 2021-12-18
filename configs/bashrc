@@ -46,8 +46,8 @@ install_bashrc_support() {
 
 # Environment
 export PATH="$HOME/software/bin:$PATH"
-export PATH="$HOME/software/python39/bin"
-export PATH="$HOME/software/vim/bin"
+export PATH="$HOME/software/python39/bin:$PATH"
+export PATH="$HOME/software/vim/bin:$PATH"
 export VISUAL=vim
 export EDITOR=vim
 export HISTFILESIZE=10000
