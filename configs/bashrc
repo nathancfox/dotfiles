@@ -260,6 +260,57 @@ parse_git_branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 
+gitdiffn () {                                                                                                                                                                                                                                
+    USAGE="Usage: gitdiffn [-a] NCOMMITS\n\nDisplay the changes made NCOMMITS ago. The current commit is 1.\n\n  -a,  --all    Display all changes since NCOMMITS ago\n"                                                                     
+    if [[ $# -gt 2 || $# -lt 1 ]]; then                                                                                                                                                                                                      
+        printf "$USAGE"                                                                                                                                                                                                                      
+        return                                                                                                                                                                                                                               
+    fi                                                                                                                                                                                                                                       
+    if [[ $# == 1 ]]; then                                                                                                                                                                                                                   
+        ALL=FALSE                                                                                                                                                                                                                            
+        n_commits=$1                                                                                                                                                                                                                         
+    else                                                                                                                                                                                                                                     
+        if ! [[ $1 == "-a" || $1 == "--all" ]]; then                                                                                                                                                                                         
+            printf "$USAGE"                                                                                                                                                                                                                  
+            return                                                                                                                                                                                                                           
+        fi                                                                                                                                                                                                                                   
+        ALL=TRUE                                                                                                                                                                                                                             
+        n_commits=$2                                                                                                                                                                                                                         
+    fi                                                                                                                                                                                                                                       
+    if [[ $n_commits == "0" ]]; then                                                                                                                                                                                                         
+        printf "$USAGE"                                                                                                                                                                                                                      
+        return                                                                                                                                                                                                                               
+    fi                                                                                                                                                                                                                                       
+    if ! [[ $n_commits =~ ^[0-9]+$ ]]; then                                                                                                                                                                                                  
+        printf "$USAGE"                                                                                                                                                                                                                      
+        return                                                                                                                                                                                                                               
+    fi                                                                                                                                                                                                                                       
+    n_available_commits=$(git log | grep "^commit" | wc -l)                                                                                                                                                                                  
+    if [[ $n_commits -gt $n_available_commits ]]; then                                                                                                                                                                                       
+        printf "$USAGE"                                                                                                                                                                                                                      
+        return                                                                                                                                                                                                                               
+    fi                                                                                                                                                                                                                                       
+    commit=$(git log | grep "^commit" | head -n $(($n_commits+1)) | tail -n1 | awk '{print $2}')                                                                                                                                             
+    penultimate_commit=$(git log | grep "^commit" | head -n $(($n_commits)) | tail -n1 | awk '{print $2}')                                                                                                                                   
+    empty_tree_commit="4b825dc642cb6eb9a060e54bf8d69288fbee4904"  # This is a standard git commit hash for the empty tree                                                                                                                    
+    if [[ $n_commits == $n_available_commits ]]; then                                                                                                                                                                                        
+        commit=$empty_tree_commit                                                                                                                                                                                                            
+    fi                                                                                                                                                                                                                                       
+    if [[ $ALL == "TRUE" ]]; then                                                                                                                                                                                                            
+        git diff $commit HEAD                                                                                                                                                                                                                
+    else                                                                                                                                                                                                                                     
+        if [[ $n_commits -gt 1 ]]; then                                                                                                                                                                                                      
+            git diff $commit $penultimate_commit                                                                                                                                                                                             
+        else                                                                                                                                                                                                                                 
+            git diff $commit HEAD                                                                                                                                                                                                            
+        fi                                                                                                                                                                                                                                   
+    fi                                                                                                                                                                                                                                       
+}
+
+gitlogshort() {
+    git log --pretty=oneline --abbrev-commit --max-count=16
+}
+
 # This allows me to set a teleportation checkpoint for quick
 # temporary customizable leaps around the file tree.
 #
