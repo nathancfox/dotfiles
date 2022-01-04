@@ -57,6 +57,7 @@ Plug 'rafi/awesome-vim-colorschemes'
 " Programming
 Plug 'sheerun/vim-polyglot'
 Plug 'dense-analysis/ale'
+let g:ale_set_highlights = 0
 
 " Python
 Plug 'Vimjas/vim-python-pep8-indent'
