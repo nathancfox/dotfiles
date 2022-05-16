@@ -41,8 +41,8 @@ fi
 #        Copy dotfiles        #
 ###############################
 backup_file $HOME/.bashrc
-cp system/bashrc $HOME/.bashrc
+cp -v system/bashrc $HOME/.bashrc
 backup_file $HOME/.vimrc
-cp vim/vimrc $HOME/.vimrc
+cp -v vim/vimrc $HOME/.vimrc
 backup_file $HOME/.gitconfig
-cp git/gitconfig $HOME/.gitconfig
+cp -v git/gitconfig $HOME/.gitconfig
