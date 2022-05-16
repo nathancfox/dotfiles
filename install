@@ -16,9 +16,9 @@ backup_file () {
 ###############################
 while read -r PACKAGE; do
     if [[ $(which apt) ]]; then
-        sudo apt install $PACKAGE
+        sudo apt -y install $PACKAGE
     elif [[ $(which yum) ]]; then
-        sudo yum install $PACKAGE
+        sudo yum -y install $PACKAGE
     else
         echo "ERROR: Neither apt nor yum found!"
         exit 1
