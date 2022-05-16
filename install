@@ -1,4 +1,19 @@
-# Install packages
+###############################
+#            Setup            #
+###############################
+BACKUP_TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+
+backup_file () {
+    BACKUP_PATH="backups/${BACKUP_TIMESTAMP}"
+    mkdir -p $BACKUP_PATH
+    if [[ -f $1 ]]; then
+        cp $1 $BACKUP_PATH/
+    fi
+}
+
+###############################
+#       Install packages      #
+###############################
 while read -r PACKAGE; do
     if [[ $(which apt) ]]; then
         sudo apt install $PACKAGE
@@ -9,3 +24,25 @@ while read -r PACKAGE; do
         exit 1
     fi
 done < system/packages
+
+if [[ $(which apt) ]]; then
+    sudo apt update
+    sudo apt upgrade
+    sudo apt autoremove
+elif [[ $(which yum) ]]; then
+    sudo yum update
+    sudo yum upgrade
+else
+    echo "ERROR: Neither apt nor yum found!"
+    exit 1
+fi
+
+###############################
+#        Copy dotfiles        #
+###############################
+backup_file $HOME/.bashrc
+cp system/bashrc $HOME/.bashrc
+backup_file $HOME/.vimrc
+cp vim/vimrc $HOME/.vimrc
+backup_file $HOME/.gitconfig
+cp git/gitconfig $HOME/.gitconfig
