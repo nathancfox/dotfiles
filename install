@@ -14,6 +14,22 @@ backup_file () {
 ###############################
 #       Install packages      #
 ###############################
+
+# Do the specific ones first in case any dependencies
+# need to go first, e.g. epel-release in CentOS
+if [[ $(which apt) ]]; then
+    while read -r PACKAGE; do
+        sudo apt install -y $PACKAGE
+    done < system/apt_packages
+elif [[ $(which yum) ]]; then
+    while read -r PACKAGE; do
+        sudo yum install -y $PACKAGE
+    done < system/yum_packages
+else
+    echo "ERROR: Neither apt nor yum found!"
+    exit 1
+fi
+
 while read -r PACKAGE; do
     if [[ $(which apt) ]]; then
         sudo apt -y install $PACKAGE
