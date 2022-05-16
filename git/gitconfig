@@ -14,4 +14,4 @@
 [color]
     ui = auto
 [credential]
-	helper = store
+    helper = store
