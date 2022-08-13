@@ -3,6 +3,7 @@ hub
 libbz2-dev
 libffi-dev
 libgdbm-compat-dev
+libgdbm-dev
 libgdm-dev
 liblzma-dev
 libreadline-dev
