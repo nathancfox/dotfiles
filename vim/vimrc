@@ -55,6 +55,7 @@ Plug 'flazz/vim-colorschemes'
 Plug 'rafi/awesome-vim-colorschemes'
 
 " Programming
+let g:polyglot_disabled = ['csv']
 Plug 'sheerun/vim-polyglot'
 Plug 'dense-analysis/ale'
 let g:ale_set_highlights = 0
