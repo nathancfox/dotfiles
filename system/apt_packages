@@ -1,4 +1,15 @@
 dnsutils
 hub
-ncal
+libbz2-dev
+libffi-dev
+libgdbm-compat-dev
+libgdm-dev
+liblzma-dev
+libreadline-dev
+libsqlite3-dev
+libssl-dev
+lzma-dev
+tk-dev
+uuid
+uuid-dev
 xsensors
