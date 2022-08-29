@@ -111,6 +111,9 @@ source $VIMRUNTIME/menu.vim
 " Turn on the Wild menu
 set wildmenu
 
+" Partial tab-complete instead of list
+set wildmode=longest,list,full
+
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc
 if has("win16") || has("win32")
