@@ -3,25 +3,11 @@ if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
-# dependencies
-# ~/software # all user-specific installed software
-# ~/software/bin # symlink all custom installed programs
-# ~/programs
-# ~/sandbox
-# ncal
-# dig
-# curl
-# sensors
-# python
-
 install_bashrc_support() {
     local distrotype
     distrotype=$(distrotype)
 
-    packages=(ncal
-              dig
-              curl
-              sensors)
+    packages=()
 
     # Nothing statement to test sudo authentication first
     sudo echo -n ""
@@ -45,9 +31,6 @@ install_bashrc_support() {
         
 
 # Environment
-export PATH="$HOME/software/bin:$PATH"
-export PATH="$HOME/software/python39/bin:$PATH"
-export PATH="$HOME/software/vim/bin:$PATH"
 export VISUAL=vim
 export EDITOR=vim
 export HISTFILESIZE=10000
@@ -80,19 +63,9 @@ export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
 
-# Nathan's aliases
-alias cal='ncal -bM'
-alias publicip='dig +short myip.opendns.com @resolver1.opendns.com'
-alias disk='df -h /'
-alias software='cd $HOME/software'
-alias temp='sensors | grep "^Core" | cut -d"(" -f1'
-alias uname='unamecustom'
-alias jobs='jobs -l'
-alias scratch="vim $HOME/scratch"
-alias clrscratch="truncate -s 0 $HOME/scratch"
-alias clrsandbox="rm -rf $HOME/sandbox/*"
-alias fileserver="python -m http.server 8000"
-alias ls="ls -h"
+# Aliases
+# ------
+
 alias ldatetime="date +'%Y-%m-%d %H:%M:%S'"
 alias sdatetime="date +'%y%m%d_%H%M%S'"
 alias ldate="date +'%Y-%m-%d'"
@@ -101,134 +74,20 @@ alias ltime="date +'%H:%M:%S'"
 alias stime="date +'%H%M%S'"
 alias bc="bc -l"
 alias grep="grep -E"
-alias ..="cd .."
-alias ...="cd ..; cd .."
-alias ....="cd ..; cd ..; cd .."
-alias open="xdg-open" # only if on ubuntu! have to check
 alias vimrc="vim $HOME/.vimrc"
 alias bashrc="vim $HOME/.bashrc"
 alias loadbashrc="source $HOME/.bashrc"
 alias cp="cp -i"
 alias mv="mv -i"
 alias rm="rm -I"
-alias cpf="cp -i"
-alias mvf="mv"
-alias rmf="rm"
 alias mkdir="mkdir -p"
-alias ping="ping -c 4"
-alias bd="cd $OLDPWD"
 alias shist="history | grep "
 alias hist="history | less"
 alias sps="ps aux | grep "
-alias search="find . | grep "
 
 
-# Nathan's Methods
-
-get_mit () {
-    wget -O "LICENSE" "https://mit-license.org/license.txt"
-}
-
-get_gnugpl () {
-    wget -O "LICENSE" "https://www.gnu.org/licenses/gpl-3.0.txt"
-}
-
-header () {
-    SEP=$1
-    FILE=$2
-    head -n1 $FILE | tr "$1" '\n' | awk '{printf "%3d | %s \n", NR, $0}'
-}
-
-shape () {
-    SEP=$1
-    FILE=$2
-    COLS=$(head -n1 $FILE | tr "$1" '\n' | wc -l)
-    ROWS=$(wc -l $FILE)
-    printf "Rows : %s\n" $ROWS
-    printf "Cols : %s\n" $COLS
-    printf " *header included if present\n"
-}
-
-up () {
-	local d=""
-	limit=$1
-	for ((i=1 ; i <= limit ; i++))
-    do
-        d=$d/..
-    done
-	d=$(echo $d | sed 's/^\///')
-	if [[ -z "$d" ]]
-    then
-		d=..
-	fi
-	cd $d
-}
-
-distrotype () {
-    local distro
-
-    if [[ $(cat /proc/version | egrep -c "Red Hat") == "1" ]]
-    then
-        distro="redhat"
-    elif [[ $(cat /proc/version | egrep -c "Ubuntu") == "1" ]]
-    then
-        distro="debian"
-    else
-        distro="unknown"
-    fi
-    echo $distro
-}
-
-# Show current network information - DEBUG and decide the info I want to show
-# netinfo ()
-# {
-# 	echo "--------------- Network Information ---------------"
-# 	ifconfig | awk '/inet addr/ {print $2}'
-# 	echo ""
-# 	ifconfig | awk '/Bcast/ {print $3}'
-# 	echo ""
-# 	ifconfig | awk '/inet addr/ {print $4}'
-# 
-# 	ifconfig | awk '/HWaddr/ {print $4,$5}'
-# 	echo "---------------------------------------------------"
-# }
-
-# # IP address lookup
-# alias whatismyip="whatsmyip"
-# whatsmyip () {
-#     # debug
-# 	# External IP Lookup
-# 	# echo -n "External IP: " ; wget http://smart-ip.net/myip -O - -q
-# 
-# 	# Internal IP Lookup
-# 	echo -n "Internal IP: " ; ifconfig wlp2s0 | grep "inet " | awk '{print $2}'
-# }
-
-# add secondary args. e.g. ls all instead of la (common alias that I don't like)
-# must use command to ignore shell functions
-# ls () {
-#     if [[ $@ == "all" ]]; then # include hidden files
-#         command ls -Alh
-#     elif [[ $@ == "ext" ]]; then # sort by extension
-#         command ls -lXh
-#     elif [[ $@ == "size" ]]; then # sort by size
-#         command ls -lSrh
-#     elif [[ $@ == "mod" ]]; then # sort by modification time
-#         command ls -lcrh
-#     elif [[ $@ == "deep" ]]; then # recursive ls
-#         command ls -lRh
-#     elif [[ $@ == "less" ]]; then # pipe to less
-#         command ls -Alh | less
-#     elif [[ $@ == "alpha" ]]; then # sort alphabetically
-#         command ls -lAp
-#     elif [[ $@ == "file" ]]; then # only show files
-#         command ls -l | grep -ev '^d'
-#     elif [[ $@ == "dir" ]]; then # only show directories
-#         command ls -l | grep -e '^d'
-#     else
-#         command ls "$@"
-#     fi
-# }
+# Functions
+# ---------
 
 extract () {
     for archive in $*; do
@@ -248,12 +107,6 @@ extract () {
         fi
     done
 }
-
-# mkdirgo () {
-#     mkdir -p $1
-#     cd $1
-# }
-
 
 parse_git_branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
@@ -275,7 +128,7 @@ gitlogshort() {
 
 # Setup
 export FLAG=""
-export FLAGBAK=""
+export FLAG_BAK=""
 
 flag () {
   option=$1
@@ -283,14 +136,14 @@ flag () {
   if [[ $option = "set" ]]; then
     echo "Flag set at: $(pwd)"
     export FLAG="$(pwd)"
-    export FLAGBAK=""
+    export FLAG_BAK=""
   elif [[ $option = "jump" ]]; then
     if [[ $FLAG != "" ]]; then
       if [[ $(pwd) != $FLAG ]]; then
-        export FLAGBAK="$(pwd)"
+        export FLAG_BAK="$(pwd)"
         cd $FLAG
       else
-        cd $FLAGBAK
+        cd $FLAG_BAK
       fi
     else
       echo "Error: No flag set."
@@ -416,11 +269,6 @@ prange () {
     head -n $2 $3 | tail -n $RANGE_SIZE
 }
 
-
-# Nathan's Misc Edits
-
-# To edit the lock screen, edit '/usr/share/gnome-shell/theme/gdm3.css'
-# and search for 'screen-shield'
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
