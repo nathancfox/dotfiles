@@ -1,5 +1,3 @@
-[hub]
-    protocol = https
 [user]
     name = Nathan Fox
     email = nchristopherfox@gmail.com
@@ -8,7 +6,7 @@
     editor = vim
     whitespace = -trailing-space
 [pull]
-    rebase = false
+    rebase = true
 [diff]
     renames = true
 [color]
