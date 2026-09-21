@@ -1,15 +1,26 @@
 [user]
     name = Nathan Fox
     email = nchristopherfox@gmail.com
-    username = nathancfox
+[init]
+    defaultBranch = main
 [core]
     editor = vim
-    whitespace = -trailing-space
+    pager = delta
+[push]
+    autoSetupRemote = true
 [pull]
     rebase = true
 [diff]
-    renames = true
+    algorithm = histogram
+[merge]
+    conflictStyle = zdiff3
 [color]
     ui = auto
 [credential]
     helper = store
+[interactive]
+    diffFilter = delta --color-only
+[delta]
+    hyperlinks = true
+    navigate = true
+    side-by-side = true
